@@ -13,12 +13,6 @@ namespace TodoApi.Controllers
         public TodoController(TodoContext context)
         {
             _context = context;
-
-            if (_context.TodoItems.Count() == 0)
-            {
-                _context.TodoItems.Add(new TodoItem { Name = "Item_1" });
-                _context.SaveChanges();
-            }
         }
 
         [HttpGet]
