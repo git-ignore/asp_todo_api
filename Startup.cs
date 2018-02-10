@@ -37,9 +37,11 @@ namespace TodoApi
                             {
                                 ValidateIssuer = true,
                                 ValidateIssuerSigningKey = true,
+                                ValidateAudience = false,
+                                ValidateLifetime = false,
 
                                 ValidIssuer = "ToDo API",
-                                IssuerSigningKey = JwtSecurityKey.Create("Supersecret service kay mama")
+                                IssuerSigningKey = JwtSecurityKey.Create()
                             };
                     });
         }

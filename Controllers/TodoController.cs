@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TodoApi.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 
 namespace TodoApi.Controllers
@@ -19,20 +20,24 @@ namespace TodoApi.Controllers
             _context = context;
         }
 
-        [HttpGet]
+
         public IEnumerable<TodoItem> GetAll()
         {
-            return _context.TodoItems.ToList();
+            int userId = getUserIdFromJwtToken();
+            return _context.TodoItems.Where(t => t.AuthorId == userId).ToList();
         }
 
         [HttpGet("{id}", Name = "GetTodo")]
         public IActionResult GetById(long id)
         {
-            var item = _context.TodoItems.FirstOrDefault(t => t.Id == id);
+            int userId = getUserIdFromJwtToken();
+            var item = getUserItemById(id);
+
             if (item == null)
             {
                 return NotFound();
             }
+
             return new ObjectResult(item);
         }
 
@@ -43,6 +48,9 @@ namespace TodoApi.Controllers
             {
                 return BadRequest();
             }
+
+            int userID = getUserIdFromJwtToken();
+            item.AuthorId = userID;
 
             _context.TodoItems.Add(item);
             _context.SaveChanges();
@@ -58,7 +66,8 @@ namespace TodoApi.Controllers
                 return BadRequest();
             }
 
-            var todo = _context.TodoItems.FirstOrDefault(t => t.Id == id);
+            var todo = getUserItemById(id);
+
             if (todo == null)
             {
                 return NotFound();
@@ -69,13 +78,15 @@ namespace TodoApi.Controllers
 
             _context.TodoItems.Update(todo);
             _context.SaveChanges();
+
             return new NoContentResult();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            var todo = _context.TodoItems.FirstOrDefault(t => t.Id == id);
+            var todo = getUserItemById(id);
+
             if (todo == null)
             {
                 return NotFound();
@@ -83,7 +94,22 @@ namespace TodoApi.Controllers
 
             _context.TodoItems.Remove(todo);
             _context.SaveChanges();
+
             return new NoContentResult();
+        }
+
+        private int getUserIdFromJwtToken()
+        {
+            int userID;
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            int.TryParse(identity.FindFirst("userID").Value, out userID);
+            return userID;
+        }
+
+        private TodoItem getUserItemById(long itemId)
+        {
+            int userId = getUserIdFromJwtToken();
+            return _context.TodoItems.FirstOrDefault(t => (t.Id == itemId && t.AuthorId == userId));
         }
 
     }

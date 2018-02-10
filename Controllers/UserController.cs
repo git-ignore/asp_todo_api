@@ -29,13 +29,10 @@ namespace TodoApi.Controllers
                 return BadRequest();
             }
 
-            User[] users = GetAll().ToArray();
-
             try
             {
                 _context.Users.Add(user);
                 _context.SaveChanges();
-
             }
             catch (Exception e)
             {
@@ -45,9 +42,10 @@ namespace TodoApi.Controllers
             }
 
             var token = new JwtTokenBuilder()
-                .AddSecurityKey(JwtSecurityKey.Create("Supersecret service kay mama"))
+                .AddSecurityKey(JwtSecurityKey.Create())
                                 .AddIssuer("ToDo API")
                                 .AddClaim("login", user.login)
+                                .AddClaim("userID", user.id.ToString())
                                 .Build();
 
             return Ok(token.Value);
