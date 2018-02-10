@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using TodoApi.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace TodoApi.Controllers
 {
@@ -15,6 +17,8 @@ namespace TodoApi.Controllers
             _context = context;
         }
 
+
+        [Authorize]
         [HttpGet]
         public IEnumerable<TodoItem> GetAll()
         {

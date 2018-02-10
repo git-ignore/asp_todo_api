@@ -9,6 +9,7 @@
     <Folder Include="Models\" />
     <Folder Include="Models\TodoItem\" />
     <Folder Include="Models\User\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +17,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.0.1" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.107" />
     <PackageReference Include="Dapper" Version="1.50.4" />
+    <PackageReference Include="Bazinga.AspNetCore.Authentication.Basic" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,5 +27,6 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\ValuesController.cs" />
+    <Compile Remove="Models\AppSettings.cs" />
   </ItemGroup>
 </Project>
