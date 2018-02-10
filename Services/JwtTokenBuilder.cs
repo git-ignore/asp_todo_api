@@ -11,9 +11,9 @@ namespace TodoApi.Services
     public sealed class JwtTokenBuilder
     {
 
-        private SecurityKey securityKey = null;
-        private string issuer = "";
-        private Dictionary<string, string> claims = new Dictionary<string, string>();
+        SecurityKey securityKey = null;
+        string issuer = "";
+        Dictionary<string, string> claims = new Dictionary<string, string>();
 
 
         public JwtTokenBuilder AddSecurityKey(SecurityKey securityKey)
@@ -29,7 +29,7 @@ namespace TodoApi.Services
             return this;
         }
 
-     
+
         public JwtTokenBuilder AddClaim(string type, string value)
         {
             this.claims.Add(type, value);
@@ -57,8 +57,6 @@ namespace TodoApi.Services
             return new JwtToken(token);
         }
 
-        #region " private "
-
         void EnsureArguments()
         {
             if (securityKey == null)
@@ -67,8 +65,6 @@ namespace TodoApi.Services
             if (string.IsNullOrEmpty(this.issuer))
                 throw new ArgumentNullException("Issuer");
         }
-
-        #endregion
     }
 
 }

@@ -1,6 +1,5 @@
-﻿using System;
-namespace TodoApi.Models
-                 
+﻿namespace TodoApi.Models
+
 {
     public class LoginInputModel
     {

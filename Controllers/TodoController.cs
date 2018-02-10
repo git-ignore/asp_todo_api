@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TodoApi.Controllers
 {
+
+    [Authorize]
     [Route("api/[controller]")]
     public class TodoController : Controller
     {
@@ -17,8 +19,6 @@ namespace TodoApi.Controllers
             _context = context;
         }
 
-
-        [Authorize]
         [HttpGet]
         public IEnumerable<TodoItem> GetAll()
         {

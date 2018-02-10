@@ -5,14 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using TodoApi.Models;
 using Microsoft.IdentityModel.Tokens;
-using System.Threading.Tasks;
 using TodoApi.Services;
 
 
 
 namespace TodoApi
 {
-    
+
     public class Startup
 
     {
@@ -28,42 +27,21 @@ namespace TodoApi
             services.AddDbContext<UserContext>(opt =>
             opt.UseSqlite("Data Source=DB/Todo.db"));
 
+            services.AddMvc();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
                         options.TokenValidationParameters =
-                             new TokenValidationParameters
-                             {
-                                 ValidateIssuer = true,
-                                 ValidateAudience = false,
-                                 ValidateLifetime = false,
-                                 ValidateIssuerSigningKey = true,
+                            new TokenValidationParameters
+                            {
+                                ValidateIssuer = true,
+                                ValidateIssuerSigningKey = true,
 
-                                 ValidIssuer = "ToDo API",
-                                 //ValidAudience = "Fiver.Security.Bearer",
-                                 IssuerSigningKey = JwtSecurityKey.Create("Supersecret service kay mama")
-                             };
-                        options.Events = new JwtBearerEvents
-                        {
-                            OnAuthenticationFailed = context =>
-                            {
-                                System.Console.WriteLine("OnAuthenticationFailed: " +
-                                    context.Exception.Message);
-                                return Task.CompletedTask;
-                            },
-                            OnTokenValidated = context =>
-                            {
-                                System.Console.WriteLine("OnTokenValidated: " +
-                                    context.SecurityToken);
-                                return Task.CompletedTask;
-                            }
-                        };
+                                ValidIssuer = "ToDo API",
+                                IssuerSigningKey = JwtSecurityKey.Create("Supersecret service kay mama")
+                            };
                     });
-            services.AddMvc();
-
-
-
-
         }
 
 
@@ -71,8 +49,6 @@ namespace TodoApi
         {
             app.UseAuthentication();
             app.UseMvc();
-
         }
-
     }
 }

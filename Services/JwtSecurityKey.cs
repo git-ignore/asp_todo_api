@@ -10,5 +10,4 @@ namespace TodoApi.Services
             return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
         }
     }
-
 }

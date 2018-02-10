@@ -7,7 +7,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 
 namespace TodoApi.Controllers
-{   
+{
     [Authorize]
     [Route("api/[controller]")]
     public class UserController : Controller
@@ -19,18 +19,13 @@ namespace TodoApi.Controllers
             _context = context;
         }
 
-
-        private IEnumerable<User> GetAll()
-        {
-            return _context.Users;
-        }
-
-        // Create New User
+        // Create New User and return its JWT token
         [AllowAnonymous]
-        [HttpPost] 
+        [HttpPost]
         public IActionResult Create([FromBody] User user)
         {
-            if (user == null) {
+            if (user == null)
+            {
                 return BadRequest();
             }
 
@@ -41,10 +36,11 @@ namespace TodoApi.Controllers
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 // TODO: handle db errors
                 Console.WriteLine(e);
-
                 return StatusCode(500);
             }
 

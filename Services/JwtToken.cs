@@ -5,7 +5,7 @@ namespace TodoApi.Services
 {
     public sealed class JwtToken
     {
-        private JwtSecurityToken token;
+        JwtSecurityToken token;
 
         internal JwtToken(JwtSecurityToken token)
         {
@@ -13,6 +13,6 @@ namespace TodoApi.Services
         }
 
         public DateTime ValidTo => token.ValidTo;
-        public string Value => new JwtSecurityTokenHandler().WriteToken(this.token);
+        public string Value => new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
